@@ -11,10 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const audioIcon = document.getElementById('audio-icon');
 
     // 1. Click "Start" -> Hide Hero, Show Envelope Screen
+    // 1. Click "Start" -> Hide Hero, Show Envelope Screen
     if (btnStart) {
         btnStart.addEventListener('click', () => {
             heroSection.style.display = 'none';
-            envelopeSection.classList.remove('hidden');
+            envelopeSection.classList.remove('hidden'); // This makes the envelope appear!
             window.scrollTo(0, 0);
 
             if (bgMusic) {
@@ -27,12 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Click Envelope/Seal -> Open Envelope animation, then reveal Main Content
+    // 2. Click Envelope -> Open animation, hide envelope, show main content
     if (envelopeWrapper) {
         envelopeWrapper.addEventListener('click', () => {
             envelopeWrapper.classList.add('open');
             
-            // Wait for envelope opening animation to finish before showing main content
             setTimeout(() => {
                 envelopeSection.style.display = 'none';
                 mainContent.classList.remove('hidden');
@@ -40,7 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 800);
         });
     }
-
     if (audioControl && bgMusic) {
         audioControl.addEventListener('click', () => {
             if (bgMusic.paused) {
