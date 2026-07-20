@@ -243,11 +243,12 @@ function submitRSVP(status) {
 
                 updateSeatAdjustmentButtons();
 
-                btnAccept.textContent = status === 'Attending' ? '✅ Accepted' : '✅ Accept';
-                btnDecline.textContent = status === 'Declined' ? '✖ Declined' : '✖ Decline';
-
-                btnAccept.style.opacity = '0.5';
-                btnDecline.style.opacity = '0.5';
+                btnAccept.textContent = '🔄 Update Attendance';
+                btnDecline.textContent = '🔄 Update to Decline';
+                btnAccept.disabled = false;
+                btnDecline.disabled = false;
+                btnAccept.style.opacity = '';
+                btnDecline.style.opacity = '';
 
                 // Optional automatic WhatsApp summary confirmation pop trigger link logic
                 const summaryMsg = encodeURIComponent(`Wedding RSVP Summary:\nName: ${currentGuest.name}\nStatus: ${status}\nSeats: ${seatsParam}`);
