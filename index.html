@@ -32,7 +32,7 @@
   <h1 class="hero-names reveal">
     <span class="name">ZAYNAB</span>
     <span class="script">&amp;</span>
-    <span class="name">SHAABAN</span>
+    <span class="name">CHAABAN</span>
   </h1>
 
   <p class="hero-copy reveal">
@@ -42,19 +42,23 @@
   <button id="btn-start" class="btn-start reveal">Start</button>
 </section>
 
-<!-- ============ MAIN INVITATION CONTENT (Hidden until "Start" / Envelope open) ============ -->
-<div id="main-content" class="hidden">
-
-  <!-- ENVELOPE / SEAL VIEW INTRO -->
-  <section class="envelope-section">
-    <div class="envelope-card">
-      <div class="wax-seal">
-        <span>HAPPILY<br>EVER<br>AFTER</span>
+<!-- ============ ENVELOPE / SEAL VIEW SCREEN ============ -->
+<section class="envelope-section hidden" id="envelope-section">
+  <div class="envelope-wrapper" id="envelope-wrapper">
+    <div class="envelope-flap"></div>
+    <div class="envelope-body">
+      <div class="wax-seal" id="wax-seal">
+        <span>TAP TO<br>OPEN</span>
       </div>
     </div>
-  </section>
+  </div>
+  <p class="envelope-instruction">Tap the wax seal to open your invitation</p>
+</section>
 
-  <!-- INVITATION INVITATION VERSE & DETAILS -->
+<!-- ============ MAIN INVITATION CONTENT ============ -->
+<div id="main-content" class="hidden">
+
+  <!-- INVITATION VERSE & DETAILS -->
   <section class="invitation-verse">
     <div class="divider" aria-hidden="true"><svg viewBox="0 0 200 24"><use href="#leaf-divider"/></svg></div>
     <p class="verse-quote">"What God has joined together, let no one separate"</p>
@@ -64,7 +68,7 @@
       With grateful hearts and faith in God's plan,<br>we invite you to celebrate the union of
     </p>
 
-    <h2 class="couple-full-names">Zaynab <span class="script">&amp;</span> Shaaban</h2>
+    <h2 class="couple-full-names">Zaynab <span class="script">&amp;</span> Chaaban</h2>
 
     <!-- COUNTDOWN -->
     <div class="countdown" id="countdown">
@@ -84,7 +88,6 @@
       <h3>DECEMBER 2026</h3>
       <div class="calendar-grid">
         <span class="day-name">SUN</span><span class="day-name">MON</span><span class="day-name">TUE</span><span class="day-name">WED</span><span class="day-name">THU</span><span class="day-name">FRI</span><span class="day-name">SAT</span>
-        <!-- Dec 2026 calendar alignment (Dec 26 is Saturday) -->
         <span></span><span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
         <span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span>
         <span>13</span><span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span>
@@ -130,7 +133,7 @@
     <p class="registry-footer-note">We're so grateful to have you as part of our journey.</p>
   </section>
 
-  <!-- ============ RSVP (Exact backend logic preserved) ============ -->
+  <!-- ============ RSVP ============ -->
   <section class="rsvp" id="rsvp">
     <div class="divider" aria-hidden="true"><svg viewBox="0 0 200 24"><use href="#leaf-divider"/></svg></div>
     <p class="eyebrow">kindly respond</p>
@@ -188,7 +191,7 @@
             fill="none" stroke="currentColor" stroke-width="1.4"/>
     </svg>
     <p class="closing-text">See you there!</p>
-    <p class="closing-names">Zaynab <span class="script">&amp;</span> Shaaban</p>
+    <p class="closing-names">Zaynab <span class="script">&amp;</span> Chaaban</p>
   </section>
 
 </div> <!-- End Main Content -->

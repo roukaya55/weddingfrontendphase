@@ -1,49 +1,61 @@
-// ============================================
-// CONFIGURATION - UPDATE THIS URL IF NEEDED
-// ============================================
 const API_URL = "https://script.google.com/macros/s/AKfycbz451IoNe8JdxlvJ5ItX9jJJHbDrPAVzC6uJtOM9XGFzR87kZupqxBFYWv3GVM87jV4zg/exec";
 
-// ============================================
-// AUDIO TOGGLE & UI START TRANSITION
-// ============================================
-const btnStart = document.getElementById('btn-start');
-const heroSection = document.getElementById('hero-section');
-const mainContent = document.getElementById('main-content');
-const bgMusic = document.getElementById('bg-music');
-const audioControl = document.getElementById('audio-control');
-const audioIcon = document.getElementById('audio-icon');
+document.addEventListener('DOMContentLoaded', () => {
+    const btnStart = document.getElementById('btn-start');
+    const heroSection = document.getElementById('hero-section');
+    const envelopeSection = document.getElementById('envelope-section');
+    const envelopeWrapper = document.getElementById('envelope-wrapper');
+    const mainContent = document.getElementById('main-content');
+    const bgMusic = document.getElementById('bg-music');
+    const audioControl = document.getElementById('audio-control');
+    const audioIcon = document.getElementById('audio-icon');
 
-if (btnStart) {
-    btnStart.addEventListener('click', () => {
-        heroSection.style.display = 'none';
-        mainContent.classList.remove('hidden');
-        window.scrollTo(0, 0);
+    // 1. Click "Start" -> Hide Hero, Show Envelope Screen
+    if (btnStart) {
+        btnStart.addEventListener('click', () => {
+            heroSection.style.display = 'none';
+            envelopeSection.classList.remove('hidden');
+            window.scrollTo(0, 0);
 
-        // Try playing background audio if available
-        if (bgMusic) {
-            bgMusic.play().then(() => {
+            if (bgMusic) {
+                bgMusic.play().then(() => {
+                    if (audioIcon) audioIcon.textContent = '🔊';
+                }).catch(e => {
+                    console.log("Audio autoplay restricted by browser policy");
+                });
+            }
+        });
+    }
+
+    // 2. Click Envelope/Seal -> Open Envelope animation, then reveal Main Content
+    if (envelopeWrapper) {
+        envelopeWrapper.addEventListener('click', () => {
+            envelopeWrapper.classList.add('open');
+            
+            // Wait for envelope opening animation to finish before showing main content
+            setTimeout(() => {
+                envelopeSection.style.display = 'none';
+                mainContent.classList.remove('hidden');
+                window.scrollTo(0, 0);
+            }, 800);
+        });
+    }
+
+    if (audioControl && bgMusic) {
+        audioControl.addEventListener('click', () => {
+            if (bgMusic.paused) {
+                bgMusic.play();
                 audioIcon.textContent = '🔊';
-            }).catch(e => {
-                console.log("Audio autoplay restricted by browser policy");
-            });
-        }
-    });
-}
-
-if (audioControl) {
-    audioControl.addEventListener('click', () => {
-        if (bgMusic.paused) {
-            bgMusic.play();
-            audioIcon.textContent = '🔊';
-        } else {
-            bgMusic.pause();
-            audioIcon.textContent = '🔇';
-        }
-    });
-}
+            } else {
+                bgMusic.pause();
+                audioIcon.textContent = '🔇';
+            }
+        });
+    }
+});
 
 // ============================================
-// COUNTDOWN TIMER — counts down to the wedding
+// COUNTDOWN TIMER
 // ============================================
 const WEDDING_DATE = new Date("2026-12-26T20:00:00");
 
@@ -56,7 +68,7 @@ function updateCountdown() {
     const minsEl = document.getElementById('cd-mins');
     const secsEl = document.getElementById('cd-secs');
 
-    if (!daysEl) return; // countdown markup not present on this page
+    if (!daysEl) return;
 
     if (diff <= 0) {
         daysEl.textContent = '00';
@@ -84,7 +96,7 @@ updateCountdown();
 setInterval(updateCountdown, 1000);
 
 // ============================================
-// STATE MANAGEMENT
+// STATE MANAGEMENT & RSVP BACKEND LOGIC
 // ============================================
 let currentGuest = {
     name: "",
@@ -95,9 +107,6 @@ let currentGuest = {
     rowIndex: null
 };
 
-// ============================================
-// DOM REFERENCES
-// ============================================
 const rsvpSection = document.getElementById('rsvp-section');
 const welcomeText = document.getElementById('welcome-text');
 const seatNumber = document.getElementById('seat-number');
@@ -109,10 +118,8 @@ const btnDecreaseSeat = document.getElementById('btn-decrease-seat');
 const btnIncreaseSeat = document.getElementById('btn-increase-seat');
 const seatWarning = document.getElementById('seat-warning');
 
-// ============================================
-// HELPER FUNCTIONS
-// ============================================
 function setMessage(text, type = '') {
+    if (!messageDiv) return;
     messageDiv.textContent = text;
     messageDiv.className = type;
 }
@@ -131,6 +138,7 @@ function showStatusBadge(status) {
 }
 
 function updateSeatAdjustmentButtons() {
+    if (!btnDecreaseSeat || !btnIncreaseSeat) return;
     btnDecreaseSeat.disabled = currentGuest.seats <= 1;
     btnIncreaseSeat.disabled = currentGuest.seats >= currentGuest.maxSeats;
 
@@ -143,9 +151,6 @@ function updateSeatAdjustmentButtons() {
     }
 }
 
-// ============================================
-// 1. AUTOMATIC CHECK ON INITIAL PAGE LOAD
-// ============================================
 window.addEventListener('DOMContentLoaded', async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('id');
@@ -173,22 +178,22 @@ window.addEventListener('DOMContentLoaded', async () => {
                 rowIndex: data.rowIndex
             };
 
-            welcomeText.textContent = `👋 ${data.name}`;
-            seatNumber.textContent = currentGuest.seats;
+            if (welcomeText) welcomeText.textContent = `👋 ${data.name}`;
+            if (seatNumber) seatNumber.textContent = currentGuest.seats;
 
-            rsvpSection.classList.remove('hidden');
+            if (rsvpSection) rsvpSection.classList.remove('hidden');
             updateSeatAdjustmentButtons();
 
             if (data.hasResponded) {
-                statusBadgeContainer.innerHTML = showStatusBadge(data.status);
+                if (statusBadgeContainer) statusBadgeContainer.innerHTML = showStatusBadge(data.status);
                 setMessage(`You already responded: ${data.status}`, 'info');
-                btnAccept.textContent = '🔄 Update Attendance';
-                btnDecline.textContent = '🔄 Update to Decline';
+                if (btnAccept) btnAccept.textContent = '🔄 Update Attendance';
+                if (btnDecline) btnDecline.textContent = '🔄 Update to Decline';
             } else {
-                statusBadgeContainer.innerHTML = '';
+                if (statusBadgeContainer) statusBadgeContainer.innerHTML = '';
                 setMessage('Please confirm your attendance choices below:');
-                btnAccept.textContent = '✅ Accept';
-                btnDecline.textContent = '✖ Decline';
+                if (btnAccept) btnAccept.textContent = '✅ Accept';
+                if (btnDecline) btnDecline.textContent = '✖ Decline';
             }
 
         } else {
@@ -200,38 +205,36 @@ window.addEventListener('DOMContentLoaded', async () => {
     }
 });
 
-// ============================================
-// 2. SEAT ADJUSTMENT HANDLERS
-// ============================================
-btnDecreaseSeat.addEventListener('click', () => {
-    if (currentGuest.seats > 1) {
-        currentGuest.seats--;
-        seatNumber.textContent = currentGuest.seats;
-        updateSeatAdjustmentButtons();
-    }
-});
+if (btnDecreaseSeat) {
+    btnDecreaseSeat.addEventListener('click', () => {
+        if (currentGuest.seats > 1) {
+            currentGuest.seats--;
+            seatNumber.textContent = currentGuest.seats;
+            updateSeatAdjustmentButtons();
+        }
+    });
+}
 
-btnIncreaseSeat.addEventListener('click', () => {
-    if (currentGuest.seats < currentGuest.maxSeats) {
-        currentGuest.seats++;
-        seatNumber.textContent = currentGuest.seats;
-        updateSeatAdjustmentButtons();
-    }
-});
+if (btnIncreaseSeat) {
+    btnIncreaseSeat.addEventListener('click', () => {
+        if (currentGuest.seats < currentGuest.maxSeats) {
+            currentGuest.seats++;
+            seatNumber.textContent = currentGuest.seats;
+            updateSeatAdjustmentButtons();
+        }
+    });
+}
 
-// ============================================
-// 3. SUBMIT RESPONSE WITH COMPLETED TIMEOUT HANDLING
-// ============================================
 function submitRSVP(status) {
-    btnAccept.disabled = true;
-    btnDecline.disabled = true;
+    if (btnAccept) btnAccept.disabled = true;
+    if (btnDecline) btnDecline.disabled = true;
 
     const statusLabel = status === 'Attending' ? 'Accepting' : 'Declining';
     setMessage(`${statusLabel}...`, 'info');
 
     if (status === 'Attending' && currentGuest.seats < 1) {
         currentGuest.seats = 1;
-        seatNumber.textContent = '1';
+        if (seatNumber) seatNumber.textContent = '1';
         updateSeatAdjustmentButtons();
     }
 
@@ -267,20 +270,23 @@ function submitRSVP(status) {
 
                 currentGuest.status = status;
                 currentGuest.hasResponded = true;
-                statusBadgeContainer.innerHTML = showStatusBadge(status);
+                if (statusBadgeContainer) statusBadgeContainer.innerHTML = showStatusBadge(status);
 
                 if (status === 'Declined') {
                     currentGuest.seats = 0;
-                    seatNumber.textContent = '0';
+                    if (seatNumber) seatNumber.textContent = '0';
                 }
 
                 updateSeatAdjustmentButtons();
 
-                btnAccept.textContent = status === 'Attending' ? '✅ Accepted' : '✅ Accept';
-                btnDecline.textContent = status === 'Declined' ? '✖ Declined' : '✖ Decline';
-
-                btnAccept.style.opacity = '0.5';
-                btnDecline.style.opacity = '0.5';
+                if (btnAccept) {
+                    btnAccept.textContent = status === 'Attending' ? '✅ Accepted' : '✅ Accept';
+                    btnAccept.style.opacity = '0.5';
+                }
+                if (btnDecline) {
+                    btnDecline.textContent = status === 'Declined' ? '✖ Declined' : '✖ Decline';
+                    btnDecline.style.opacity = '0.5';
+                }
 
                 const summaryMsg = encodeURIComponent(`Wedding RSVP Summary:\nName: ${currentGuest.name}\nStatus: ${status}\nSeats: ${seatsParam}`);
                 window.open(`https://wa.me/96170510183?text=${summaryMsg}`, '_blank');
@@ -295,18 +301,15 @@ function submitRSVP(status) {
 
             currentGuest.status = status;
             currentGuest.hasResponded = true;
-            statusBadgeContainer.innerHTML = showStatusBadge(status);
+            if (statusBadgeContainer) statusBadgeContainer.innerHTML = showStatusBadge(status);
 
             if (status === 'Declined') {
                 currentGuest.seats = 0;
-                seatNumber.textContent = '0';
+                if (seatNumber) seatNumber.textContent = '0';
             }
             updateSeatAdjustmentButtons();
         });
 }
 
-// ============================================
-// 4. ACTION INTERFACE TRIGGERS
-// ============================================
-btnAccept.addEventListener('click', () => { if (!btnAccept.disabled) submitRSVP('Attending'); });
-btnDecline.addEventListener('click', () => { if (!btnDecline.disabled) submitRSVP('Declined'); });
+if (btnAccept) btnAccept.addEventListener('click', () => { if (!btnAccept.disabled) submitRSVP('Attending'); });
+if (btnDecline) btnDecline.addEventListener('click', () => { if (!btnDecline.disabled) submitRSVP('Declined'); });

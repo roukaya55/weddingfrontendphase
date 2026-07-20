@@ -451,3 +451,98 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   letter-spacing: 1px;
 }
 .closing-names .script { font-family: var(--font-script); color: var(--rose); font-size: 22px; padding: 0 4px; }
+/* ================= ENVELOPE INTERACTION SCREEN ================= */
+.envelope-section {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.envelope-wrapper {
+  background: var(--bg-soft);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  width: 300px;
+  height: 200px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.envelope-wrapper:hover {
+  transform: translateY(-4px);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: #EFE9DF;
+  clip-path: polygon(0 0, 50% 100%, 100% 0);
+  border-top: 1.5px solid var(--line);
+  transform-origin: top;
+  transition: transform 0.6s ease;
+  z-index: 3;
+}
+
+.envelope-body {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.wax-seal {
+  width: 76px;
+  height: 76px;
+  background: radial-gradient(circle, #D4AF37 0%, #AA822A 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+  border: 2px dashed #F3E5AB;
+  z-index: 4;
+  transition: transform 0.3s ease;
+}
+
+.envelope-wrapper:hover .wax-seal {
+  transform: scale(1.08);
+}
+
+.envelope-instruction {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin-top: 24px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Open Animation States */
+.envelope-wrapper.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-wrapper.open {
+  transform: scale(1.15);
+  opacity: 0;
+}
