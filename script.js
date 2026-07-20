@@ -92,13 +92,6 @@ function showStatusBadge(status) {
 }
 
 function updateSeatAdjustmentButtons() {
-    // If declined, lock adjustments completely
-    if (currentGuest.status === 'Declined') {
-        btnDecreaseSeat.disabled = true;
-        btnIncreaseSeat.disabled = true;
-        return;
-    }
-
     btnDecreaseSeat.disabled = currentGuest.seats <= 1;
     btnIncreaseSeat.disabled = currentGuest.seats >= currentGuest.maxSeats;
 
@@ -201,7 +194,13 @@ function submitRSVP(status) {
     const statusLabel = status === 'Attending' ? 'Accepting' : 'Declining';
     setMessage(`${statusLabel}...`, 'info');
 
-    const seatsParam = status === 'Attending' ? currentGuest.seats : 0;
+    if (status === 'Attending' && currentGuest.seats < 1) {
+        currentGuest.seats = 1;
+        seatNumber.textContent = '1';
+        updateSeatAdjustmentButtons();
+    }
+
+    const seatsParam = status === 'Attending' ? Math.max(currentGuest.seats, 1) : 0;
     const statusParam = encodeURIComponent(status);
     const rowIndexParam = currentGuest.rowIndex;
     const nameParam = encodeURIComponent(currentGuest.name);
