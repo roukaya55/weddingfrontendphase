@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zaynab & Chaaban — Wedding Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Parisienne&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- decorative fixed vine, purely ambient -->
+<div class="page-vine" aria-hidden="true">
+  <svg viewBox="0 0 60 400" preserveAspectRatio="none">
+    <path class="vine-line" d="M30 0 C10 40 50 80 30 120 C10 160 50 200 30 240 C10 280 50 320 30 360 C15 380 40 395 30 400"/>
+  </svg>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="sprig sprig--tl" aria-hidden="true">
+    <svg viewBox="0 0 120 120"><use href="#sprig"/></svg>
+  </div>
+  <div class="sprig sprig--tr" aria-hidden="true">
+    <svg viewBox="0 0 120 120"><use href="#sprig"/></svg>
+  </div>
+
+  <p class="eyebrow reveal">the wedding of</p>
+  <h1 class="hero-names reveal">
+    <span class="name">ZAYNAB</span>
+    <span class="script">&amp;</span>
+    <span class="name">CHAABAN</span>
+  </h1>
+
+  <div class="ring-mark reveal" aria-hidden="true">
+    <svg viewBox="0 0 60 60" width="34" height="34">
+      <circle cx="30" cy="34" r="14" fill="none" stroke="currentColor" stroke-width="1.4"/>
+      <path d="M30 20 L24 10 L36 10 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    </svg>
+  </div>
+
+  <p class="hero-copy reveal">
+    are inviting you to celebrate the joyous union<br> of their families and the beginning of their life together.
+  </p>
+
+  <a href="#rsvp" class="btn-ghost reveal">Reply to this invitation ↓</a>
+</section>
+
+<!-- ============ DATE & VENUE ============ -->
+<section class="date-venue">
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 200 24"><use href="#leaf-divider"/></svg></div>
+  <p class="eyebrow">save the date</p>
+  <div class="big-date">26 <span class="dot">·</span> 12 <span class="dot">·</span> 2026</div>
+  <p class="venue-line">Eight o'clock in the evening</p>
+  <p class="venue-name">Roche Dorée</p>
+  <p class="venue-sub">Mejdlaya, North Lebanon</p>
+</section>
+
+<!-- ============ COUNTDOWN ============ -->
+<section class="countdown-section">
+  <p class="eyebrow">counting down to</p>
+  <div class="countdown" id="countdown">
+    <div class="count-unit"><span id="cd-days">00</span><label>Days</label></div>
+    <div class="count-unit"><span id="cd-hours">00</span><label>Hours</label></div>
+    <div class="count-unit"><span id="cd-mins">00</span><label>Minutes</label></div>
+    <div class="count-unit"><span id="cd-secs">00</span><label>Seconds</label></div>
+  </div>
+</section>
+
+<!-- ============ DETAILS ============ -->
+<section class="details">
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 200 24"><use href="#leaf-divider"/></svg></div>
+
+  <div class="detail-block">
+    <h3>Details</h3>
+    <p>Doors open at eight in the evening at Roche Dorée. Dinner is served after the couple's first
+       dance, so a punctual arrival means you won't miss a moment of the celebration.</p>
+    <p class="note">This is an alcohol-free celebration — thank you for honoring the couple's wishes.</p>
+    <p class="note">We love your little ones, but this evening is adults-only.</p>
+  </div>
+
+  <div class="detail-block">
+    <h3>Reception</h3>
+    <p>The reception follows immediately at the same venue, under the garden lights of Roche Dorée.
+       Expect an evening of dinner, dancing, and a few surprises the couple has been keeping close.</p>
+  </div>
+
+  <div class="detail-block">
+    <h3>Getting There &amp; Help</h3>
+    <p>Roche Dorée sits just outside Mejdlaya; parking is available on site. If you need directions,
+       help with your reservation, or have any questions before the day, we're one call away.</p>
+    <a class="contact-pill" href="tel:+96170510183">📞 +961 70 510 183</a>
+  </div>
+</section>
+
+<!-- ============ RSVP (logic preserved from original app) ============ -->
+<section class="rsvp" id="rsvp">
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 200 24"><use href="#leaf-divider"/></svg></div>
+  <p class="eyebrow">kindly respond</p>
+  <h2 class="section-title">RSVP</h2>
+
+  <div class="rsvp-card">
+    <div id="rsvp-section" class="hidden">
+        <div class="guest-name-display" id="welcome-text">👋 Welcome!</div>
+        <div id="status-badge-container"></div>
+
+        <p class="seats-label">Reserve Your Seats</p>
+        <div class="seat-controls">
+            <button id="btn-decrease-seat" class="btn-secondary btn-round">−</button>
+            <div id="seat-count" class="seat-highlight">
+                <span id="seat-number">1</span> Seats
+            </div>
+            <button id="btn-increase-seat" class="btn-secondary btn-round">+</button>
+        </div>
+
+        <p id="seat-warning" class="seat-warning">
+            Allowed maximum: -- seats.
+        </p>
+
+        <div class="button-group">
+            <button id="btn-accept" class="btn-accept">✅ Accept</button>
+            <button id="btn-decline" class="btn-decline">✖ Decline</button>
+        </div>
+    </div>
+
+    <div id="message">Loading invitees data...</div>
+  </div>
+</section>
+
+<!-- ============ MAP ============ -->
+<section class="map-section">
+  <div class="divider" aria-hidden="true"><svg viewBox="0 0 200 24"><use href="#leaf-divider"/></svg></div>
+  <p class="eyebrow">find your way</p>
+  <h2 class="section-title">Roche Dorée</h2>
+  <div class="map-frame">
+    <iframe
+      src="https://maps.google.com/maps?q=Roche%20Dor%C3%A9e%2C%20Mejdlaya%2C%20Lebanon&z=15&output=embed"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      allowfullscreen>
+    </iframe>
+  </div>
+  <a class="btn-ghost" href="https://share.google/bAsd7wNobUHdIQNVY" target="_blank" rel="noopener">Open directions ↗</a>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section class="closing">
+  <svg class="heart-mark" viewBox="0 0 60 50" width="40" aria-hidden="true">
+    <path d="M30 46 C10 32 2 20 2 12 C2 4 8 -1 15 2 C21 4 26 10 30 16 C34 10 39 4 45 2 C52 -1 58 4 58 12 C58 20 50 32 30 46 Z"
+          fill="none" stroke="currentColor" stroke-width="1.4"/>
+  </svg>
+  <p class="closing-text">We can't wait to celebrate with you<br>and look forward to sharing this special day together.</p>
+  <p class="closing-names">Zaynab <span class="script">&amp;</span> Chaaban</p>
+</section>
+
+<!-- shared SVG defs (line-art motifs used across the page) -->
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <g id="sprig">
+      <path d="M60 110 C60 80 60 50 60 15" fill="none" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M60 90 C45 82 35 70 32 55" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <path d="M60 70 C75 62 85 50 88 35" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <path d="M60 45 C48 38 40 28 38 18" fill="none" stroke="currentColor" stroke-width="1"/>
+      <ellipse cx="30" cy="53" rx="9" ry="4" transform="rotate(-30 30 53)" fill="none" stroke="currentColor" stroke-width="1"/>
+      <ellipse cx="90" cy="33" rx="9" ry="4" transform="rotate(25 90 33)" fill="none" stroke="currentColor" stroke-width="1"/>
+      <ellipse cx="36" cy="16" rx="7" ry="3.5" transform="rotate(-40 36 16)" fill="none" stroke="currentColor" stroke-width="1"/>
+      <circle cx="60" cy="14" r="6" fill="none" stroke="currentColor" stroke-width="1.1"/>
+      <circle cx="60" cy="14" r="2.5" fill="none" stroke="currentColor" stroke-width="0.8"/>
+    </g>
+    <g id="leaf-divider">
+      <path d="M0 12 H80" stroke="currentColor" stroke-width="1"/>
+      <path d="M120 12 H200" stroke="currentColor" stroke-width="1"/>
+      <path d="M100 12 C94 4 86 2 82 8 C86 14 94 16 100 12 C106 16 114 14 118 8 C114 2 106 4 100 12 Z"
+            fill="none" stroke="currentColor" stroke-width="1.1"/>
+    </g>
+  </defs>
+</svg>
+
+<script src="script.js"></script>
+</body>
+</html>
