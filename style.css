@@ -452,20 +452,18 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 }
 .closing-names .script { font-family: var(--font-script); color: var(--rose); font-size: 22px; padding: 0 4px; }
 /* ================= ENVELOPE INTERACTION SCREEN ================= */
-/* ================= ENVELOPE INTERACTION SCREEN ================= */
 .envelope-section {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 100vw;
   height: 100vh;
   background: var(--bg);
   z-index: 999;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 16px;
 }
 
 .envelope-section.hidden {
@@ -474,13 +472,15 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
 .envelope-wrapper {
   background: var(--bg-soft);
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
-  width: 300px;
-  height: 200px;
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  height: 75vh;
+  max-height: 640px;
   position: relative;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  box-shadow: 0 14px 40px rgba(0,0,0,0.08);
   transition: transform 0.6s ease, opacity 0.6s ease;
   display: flex;
   align-items: center;
@@ -496,10 +496,10 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   top: 0;
   left: 0;
   width: 100%;
-  height: 100px;
+  height: 45%;
   background: #EFE9DF;
   clip-path: polygon(0 0, 50% 100%, 100% 0);
-  border-top: 1.5px solid var(--line);
+  border-top: 2px solid var(--line);
   transform-origin: top;
   transition: transform 0.6s ease;
   z-index: 3;
@@ -510,40 +510,21 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
   width: 100%;
   height: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 2;
 }
 
-.wax-seal {
-  width: 76px;
-  height: 76px;
-  background: radial-gradient(circle, #D4AF37 0%, #AA822A 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  color: #fff;
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.18);
-  border: 2px dashed #F3E5AB;
-  z-index: 4;
-  transition: transform 0.3s ease;
-}
-
-.envelope-wrapper:hover .wax-seal {
-  transform: scale(1.08);
-}
-
 .envelope-instruction {
-  font-size: 13.5px;
+  position: absolute;
+  bottom: 24px;
+  font-size: 13px;
   color: var(--ink-soft);
-  margin-top: 24px;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   text-transform: uppercase;
+  text-align: center;
+  width: 100%;
 }
 
 /* Open Animation States */
@@ -553,6 +534,6 @@ button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 }
 
 .envelope-wrapper.open {
-  transform: scale(1.15);
+  transform: scale(1.05);
   opacity: 0;
 }
