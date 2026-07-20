@@ -4,6 +4,45 @@
 const API_URL = "https://script.google.com/macros/s/AKfycbz451IoNe8JdxlvJ5ItX9jJJHbDrPAVzC6uJtOM9XGFzR87kZupqxBFYWv3GVM87jV4zg/exec";
 
 // ============================================
+// AUDIO TOGGLE & UI START TRANSITION
+// ============================================
+const btnStart = document.getElementById('btn-start');
+const heroSection = document.getElementById('hero-section');
+const mainContent = document.getElementById('main-content');
+const bgMusic = document.getElementById('bg-music');
+const audioControl = document.getElementById('audio-control');
+const audioIcon = document.getElementById('audio-icon');
+
+if (btnStart) {
+    btnStart.addEventListener('click', () => {
+        heroSection.style.display = 'none';
+        mainContent.classList.remove('hidden');
+        window.scrollTo(0, 0);
+
+        // Try playing background audio if available
+        if (bgMusic) {
+            bgMusic.play().then(() => {
+                audioIcon.textContent = '🔊';
+            }).catch(e => {
+                console.log("Audio autoplay restricted by browser policy");
+            });
+        }
+    });
+}
+
+if (audioControl) {
+    audioControl.addEventListener('click', () => {
+        if (bgMusic.paused) {
+            bgMusic.play();
+            audioIcon.textContent = '🔊';
+        } else {
+            bgMusic.pause();
+            audioIcon.textContent = '🔇';
+        }
+    });
+}
+
+// ============================================
 // COUNTDOWN TIMER — counts down to the wedding
 // ============================================
 const WEDDING_DATE = new Date("2026-12-26T20:00:00");
@@ -108,7 +147,6 @@ function updateSeatAdjustmentButtons() {
 // 1. AUTOMATIC CHECK ON INITIAL PAGE LOAD
 // ============================================
 window.addEventListener('DOMContentLoaded', async () => {
-    // Extract the security token parameter string out from the address URL bar (e.g. ?id=kX8zP2)
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('id');
 
@@ -124,9 +162,8 @@ window.addEventListener('DOMContentLoaded', async () => {
         const data = await response.json();
 
         if (data.found) {
-            setMessage(''); // Clear reading status indicator text
+            setMessage('');
 
-            // Update local state container
             currentGuest = {
                 name: data.name,
                 seats: data.confirmedSeats,
@@ -136,11 +173,9 @@ window.addEventListener('DOMContentLoaded', async () => {
                 rowIndex: data.rowIndex
             };
 
-            // Inject localized dynamic text nodes
             welcomeText.textContent = `👋 ${data.name}`;
             seatNumber.textContent = currentGuest.seats;
 
-            // Swap application display visibility layers
             rsvpSection.classList.remove('hidden');
             updateSeatAdjustmentButtons();
 
@@ -221,7 +256,6 @@ function submitRSVP(status) {
                 if (jsonMatch) data = JSON.parse(jsonMatch[0]);
             }
 
-            // Fallback object declaration fallback handler
             if (!data) data = { success: true };
 
             if (data.success === true || data.success === 'true') {
@@ -248,7 +282,6 @@ function submitRSVP(status) {
                 btnAccept.style.opacity = '0.5';
                 btnDecline.style.opacity = '0.5';
 
-                // Optional automatic WhatsApp summary confirmation pop trigger link logic
                 const summaryMsg = encodeURIComponent(`Wedding RSVP Summary:\nName: ${currentGuest.name}\nStatus: ${status}\nSeats: ${seatsParam}`);
                 window.open(`https://wa.me/96170510183?text=${summaryMsg}`, '_blank');
 
